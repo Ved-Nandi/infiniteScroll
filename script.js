@@ -7,13 +7,15 @@
 const imgConte = document.getElementById('img-conte');
 const loader = document.getElementById('loader');
 
-// to check the image loader count
-let checkLoad = false;
-let countImg = 0;
+// to get all a tag
+let all_a_tag = document.querySelectorAll('a');
 
 
 // number of images
-let count = 5;
+let count = 10;
+
+// count no of images loaded
+let imgloaded = 0;
 
 // api key
 const API_KEY = "20O5AnV-GilJl1gSfd0TvmairFs_m2IFpFfGYgtJLrU";
@@ -38,12 +40,20 @@ const observer = new IntersectionObserver(entries => {
     
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            getPhotos()
+            
+            // first we need to unobserve previous a tag
+            all_a_tag = document.querySelectorAll('a');
+            observer.unobserve(all_a_tag[all_a_tag.length - 3]);
+
+            // call get photos get mor photos & set count 30 to get 30 photos now on
+            count = 30;
+            imgloaded = 0;
+            getPhotos();
+            
         }
     })
     
 })
-
 
 // set attribute function
 function setAtt(tag, attributes) {
@@ -74,14 +84,20 @@ function displayPhotos(photos) {
         // put img in a tag
         aTag.appendChild(imgTag);
         imgConte.appendChild(aTag)
-        
-    });
 
-    // setting up onserver to a tag
-    let all_a_tag = agdocument.querySelectorAll('a')
-    console.log(all_a_tag);
-    
+        // img loader
+        imgTag.addEventListener('load', () => {
+            
+            imgloaded++;
+            if (imgloaded === count) {
+
+                // setting up onserver to a tag
+                all_a_tag = document.querySelectorAll('a')
+                observer.observe(all_a_tag[all_a_tag.length - 3])
+            }
+        }) 
+    });
 }
 
-getPhotos()
+getPhotos();
 
