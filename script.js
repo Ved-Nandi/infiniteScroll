@@ -11,7 +11,7 @@ let countImg = 0;
 let count = 5;
 
 // api key
-const API_KEY = "20O5AnV-GilJl1gSfd0TvmairFs_m2IFpFfGYgtJLrU";
+const API_KEY = process.env.SPLASH_API;
 
 // Unsplash api
 const API_URL = `https://api.unsplash.com/photos/random/?client_id=${API_KEY}&count=`;
